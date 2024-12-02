@@ -84,7 +84,7 @@ Hi, I’m **Ankush Raj or Ankush Raj Mahe Yam (ARMY)**, an aspiring software dev
 - **Instagram:** [@AnkushRajaMaheYam](https://instagram.com/AnkushRajaMaheYam)  
 - **Facebook:** [Ankush Raj](https://facebook.com/AnkushRajMaheYam)  
 - **Fiverr:** [@AnkushRajMaheYa](https://www.fiverr.com/ankushrajmaheya)  
-- **Fiverr:** [Ankush Raj](https://www.upwork.com/freelancers/~01bf6d1e8483199ba6?mp_source=share)  
+- **Upwork:** [Ankush Raj](https://www.upwork.com/freelancers/~01bf6d1e8483199ba6)  
 
 
 ---
