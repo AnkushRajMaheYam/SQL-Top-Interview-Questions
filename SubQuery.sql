@@ -131,6 +131,8 @@ WHERE DEPTNO IN (SELECT DEPTNO
                                                                                             FROM EMP
                                                                                                     GROUP BY MGR
                                                                                                         HAVING COUNT(*)>=2));
+
+
 --12--
 /*
 DISPLAY THE DEPARTMENT OF THE EMPLOYEE WHOSE NAME DOES NOT STARTS WITH 'S' AND SALARY BETWEEN 1500 TO 3000.
@@ -139,7 +141,7 @@ SELECT DEPTNO
 FROM DEPT
 WHERE DEPTNO IN (SELECT DEPTNO
                         FROM EMP
-                          WHERE ENAME NOT LIKE 'S%' AND (SAL BETWEEN 1501 AND 3000));
+                          WHERE ENAME NOT LIKE 'S%' AND SAL BETWEEN 1501 AND 2900);
 
 
 --13--
@@ -174,6 +176,7 @@ WHERE DEPTNO IN (SELECT DEPTNO
                     FROM EMP
                         GROUP BY DEPTNO
                           HAVING COUNT(ENAME)>4);
+
 --16--
 /*
 WRITE A QUERY TO DISPLAY ALL THE EMPLOYEE WHOSE JOB NOT SAME AS ALLEN AND SALARY IS GREATER THAN MARTIN.
@@ -195,18 +198,18 @@ SELECT ENAME
 FROM EMP
 WHERE DEPTNO IN (SELECT DEPTNO
                   FROM DEPT
-                      WHERE LOC = (SELECT LOC
+                      WHERE LOC IN (SELECT LOC
                                       FROM DEPT
                                           WHERE DEPTNO IN (SELECT DEPTNO
                                                               FROM EMP
-                                                                 WHERE EMPNO = (SELECT MGR
+                                                                 WHERE EMPNO IN (SELECT MGR
                                                                                         FROM EMP
                                                                                            WHERE ENAME = 'ADAMS'))));
 
 
 
 
---18-- ???
+--18-- ***
 /*
 DISPLAY THE JOB, MANAGER NUMBER OF EMPLOYEES WHO IS WORKING FOR JONES.
 */
@@ -235,9 +238,11 @@ SELECT COUNT(*)
 FROM EMP
 WHERE SAL < (SELECT SAL
                   FROM EMP
-                      WHERE EMPNO = (SELECT MGR
+                      WHERE EMPNO IN (SELECT MGR
                                         FROM EMP
-                                            WHERE ENAME = 'BLAKE'));
+                                            WHERE ENAME IN 'BLAKE'));
+
+
 
 --21--
 /*
@@ -870,3 +875,26 @@ WHERE COMM > ALL (SELECT MAX(SAL)
                                                                 WHERE ENAME='KING');
 
 
+--74-- ***
+/*
+DISPLAY THE LOCATION OF ALL THE DEPARTMENTS WHICH HAVE EMPLOYEES JOINED IN THE YEAR 81.
+*/
+SELECT LOC 
+FROM DEPT
+WHERE DEPTNO IN (SELECT DEPTNO 
+                    FROM EMP 
+                        WHERE HIREDATE BETWEEN '01-JAN-81' AND '31-DEC-81');
+
+--OR
+
+SELECT LOC FROM DEPT WHERE DEPTNO IN (SELECT DEPTNO FROM EMP WHERE HIREDATE LIKE '__-___-81');
+
+--75--
+/*
+DISPLAY DEPARTEMENT WISE MINIMUM SALARY WHICH IS LESS THAN AVERAGE SALARY OF EMPLOYEES.
+*/
+
+--76--
+/*
+DISPLAY ALL THE EMPLOYEES WHO ARE REPORTING TO 'JONES'.
+*/
