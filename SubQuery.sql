@@ -3,11 +3,13 @@
 DISPLAY ALL THE EMPLOYEES WHOSE DEPARTMENT NAMES ENDING 'S'.
 */
 
-SELECT *
+
+SELECT ENAME
 FROM EMP
 WHERE DEPTNO IN (SELECT DEPTNO
-                        FROM DEPT
-                            WHERE DNAME LIKE '%S');
+                    FROM DEPT
+                        WHERE DNAME LIKE '%S');
+
 
 
 --2--
@@ -17,10 +19,21 @@ QUERY TO DISPLAY THE EMPLOYEE NAMES WHO IS HAVING MAXIMUM SALARY IN DEPT NAME "A
 SELECT ENAME
 FROM EMP
 WHERE SAL = (SELECT MAX(SAL)
+                FROM EMP) AND DEPTNO  (SELECT DEPTNO
+                                            FROM DEPT 
+                                                WHERE DNAME = 'ACCOUNTING');
+
+
+/*
+
+SELECT ENAME
+FROM EMP
+WHERE SAL = (SELECT MAX(SAL)
                 FROM EMP
                    WHERE DEPTNO IN (SELECT DEPTNO
                                         FROM DEPT
                                             WHERE DNAME = 'ACCOUNTING'));
+*/
 
 --3--
 /*
@@ -32,10 +45,9 @@ WHERE DEPTNO IN (SELECT DEPTNO
                         FROM EMP
                           WHERE COMM = (SELECT MAX(COMM)
                                                 FROM EMP));
-
 --4--
 /*
-QUERY TO DISPLAY ALA THE EMPLOYEE IN 'OPERATIONS' AND 'ACCOUNTING' DEPT.
+QUERY TO DISPLAY THE EMPLOYEE NAMES WHOSE DEPARTEMENT NAME HAS 2ND CHARACTER AS 'O'
 */
 SELECT ENAME
 FROM EMP
@@ -83,6 +95,8 @@ WHERE DNAME = 'SALESMAN'
 GROUP BY DNAME
 HAVING COUNT(*) >= 3;
 
+--OR
+SELECT DNAME FROM DEPT WHERE DEPTNO IN (SELECT DEPTNO FROM EMP WHERE JOB = 'SALESMAN' GROUP BY DEPTNO HAVING COUNT(*)>=3); 👍👍👍
 
 --9--
 /*
@@ -104,18 +118,19 @@ WHERE MGR = (SELECT MGR
                  FROM EMP
                     WHERE ENAME = 'JONES');
 
---11-- ??
+
+--11-- ***
 /*
 LIST EMPLOYEES FROM RESEARCH & ACCOUNTING HAVING ATLEAST 2 REPORTING.
 */
 SELECT ENAME
 FROM EMP
 WHERE DEPTNO IN (SELECT DEPTNO
-                    FROM DEPT
-                      WHERE DNAME = 'RESEARCH' AND DNAME = 'ACCOUNTING' AND MGR IS NOT NULL
-                        GROUP BY DEPTNO
-                          HAVING COUNT(MGR)>=2);
-
+                        FROM DEPT
+                            WHERE DNAME IN ('ACCOUNTING', 'RESEARCH') AND EMPNO IN (SELECT MGR
+                                                                                            FROM EMP
+                                                                                                    GROUP BY MGR
+                                                                                                        HAVING COUNT(*)>=2));
 --12--
 /*
 DISPLAY THE DEPARTMENT OF THE EMPLOYEE WHOSE NAME DOES NOT STARTS WITH 'S' AND SALARY BETWEEN 1500 TO 3000.
@@ -812,7 +827,7 @@ WHERE SAL < (SELECT MAX(SAL)
                         ) AND DEPTNO IN (SELECT DEPTNO 
                                                 FROM DEPT
                                                     WHERE LOC='DALLAS');
-
+SELECT ENAME FROM EMP WHERE SAL > (SELECT MAX(SAL) FROM EMP) AND DEPTNO IN (SELECT DEPTNO FROM DEPT WHERE LOC = 'DALLAS');
 --71--
 /*
 WRITE A QUERY TO DISPLAY THE EMPLOYEE INFORMATION WHO IS NOT TAKING COMMISSION AND JOINED COMPANY AFTER JULY 83
@@ -828,7 +843,8 @@ WHERE (COMM IS NULL OR COMM = 0)
 AND HIREDATE > TO_DATE('31-JUL-1983', 'DD-MON-YYYY');
 
 
---72--
+
+--72-- **
 /*
 LIST EMPLOYEES FROM SALES AND RESEARCH DEPARTEMENT HAVING ATLEAT 2 REPORTING EMPLOYEES.
 */
@@ -841,18 +857,16 @@ WHERE DEPTNO IN (SELECT DEPTNO
                                                                                     GROUP BY MGR
                                                                                         HAVING COUNT(*) > =2);
 
---73--
+--73-- **
 /*
 LIST EMPLOYEES WHO HAVE COMMISSION GREATER THAN MAXIMUM SALARY OF ALL THE SALESMAN AND WHO DO NOT REPORT TO KING DIRECTLY.
 */
 SELECT ENAME
 FROM EMP
-WHERE COMM > (SELECT MAX(SAL)
-                    FROM EMP
-                        WHERE JOB = 'SALESMAN') AND MGR != (SELECT EMPNO
-                                                                FROM EMP
-                                                                    WHERE ENAME='KING');
-
-
+WHERE COMM > ALL (SELECT MAX(SAL)
+                FROM EMP
+                    WHERE JOB='SALESMAN') AND MGR != (SELECT EMPNO
+                                                            FROM EMP
+                                                                WHERE ENAME='KING');
 
 
